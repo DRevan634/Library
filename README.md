@@ -1,28 +1,25 @@
-﻿![preview](preview.png)
-Library — PHP CRUD with Bootstrap
+﻿Library — PHP CRUD with Bootstrap
 
-Requirements
-- XAMPP (Apache + MySQL)
-- PHP 7.4+
+# Library — PHP + REST API + Bootstrap
 
-Installation
-1. Copy folder `Library` in `\xampp\htdocs\`.
-2. Run Apache and MySQL in XAMPP.
-3. Open `http://localhost/phpmyadmin` and execute:
-   ```sql
-   CREATE DATABASE library;
-   USE library;
-   CREATE TABLE books (
-       id INT AUTO_INCREMENT PRIMARY KEY,
-       title VARCHAR(255) NOT NULL,
-       author VARCHAR(255) NOT NULL,
-       pages INT NOT NULL,
-       published_date DATE NOT NULL,
-       price int(11) NOT NULL,
-       rate int(11) NOT NULL
-   );
+## Quick start (XAMPP)
+1. Copy the `Library` folder to `C:\xampp\htdocs\`.
+2. Start Apache and MySQL in XAMPP.
+3. Import `demo_data.txt` via phpMyAdmin (http://localhost/phpmyadmin).
+4. Open in browser: `http://localhost/Library/public/home.php`
 
-   INSERT INTO books (title, author, pages, published_date, price, rate) VALUES
-   ('The Great Gatsby', 'F. Scott Fitzgerald', 218, '1925-04-10', 242, 4),
-   ('To Kill a Mockingbird', 'Harper Lee', 281, '1960-07-11', 1345, 5),
-   ('1984', 'George Orwell', 328, '1949-06-08',324, 5);
+## Demo accounts
+- admin / admin123 (role = admin)
+- user / admin123 (role = user)
+
+## API
+- `GET /api/books.php` — list books
+- `GET /api/books.php?id=1` — get book
+- `POST /api/books.php` — add (admin)
+- `PUT /api/books.php?id=1` — update (admin)
+- `DELETE /api/books.php?id=1` — delete (admin)
+- `POST /api/auth.php?action=login` — login (JSON body)
+- `POST /api/auth.php?action=register` — register (JSON)
+- `POST /api/auth.php?action=logout` — logout
+
+![preview](preview.png)

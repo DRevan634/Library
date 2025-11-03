@@ -1,0 +1,30 @@
+CREATE DATABASE IF NOT EXISTS library CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE library;
+
+CREATE TABLE IF NOT EXISTS users (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  username VARCHAR(100) NOT NULL UNIQUE,
+  email VARCHAR(255) NOT NULL UNIQUE,
+  password VARCHAR(255) NOT NULL,
+  role ENUM('admin','user') NOT NULL DEFAULT 'user',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+INSERT INTO users (username, email, password, role) VALUES
+('admin','admin@example.com','$2y$10$DInsPWm6NLy8.D5HItvlCOQHzv6k7uem7nF0.M2QCENhML/bcZyai','admin'),
+('user','user@example.com','$2y$10$DInsPWm6NLy8.D5HItvlCOQHzv6k7uem7nF0.M2QCENhML/bcZyai','user');
+
+CREATE TABLE IF NOT EXISTS books (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  title VARCHAR(255) NOT NULL,
+  author VARCHAR(255) NOT NULL,
+  year INT NOT NULL,
+  pages INT NOT NULL DEFAULT 0,
+  price DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+  rate DECIMAL(2,1) NOT NULL DEFAULT 0.0
+);
+
+INSERT INTO books (title, author, year, pages, price, rate) VALUES
+('The Great Gatsby','F. Scott Fitzgerald',1925, 218,12.99,4.3),
+('To Kill a Mockingbird','Harper Lee',1960, 281,9.50,4.8),
+('1984','George Orwell',1949, 328, 14.20,4.6);
