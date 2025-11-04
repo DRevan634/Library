@@ -1,9 +1,8 @@
-﻿Library — PHP CRUD with Bootstrap
-
-# Library — PHP + REST API + Bootstrap
+﻿# Library — PHP + REST API + Bootstrap
 
 ## Quick start (XAMPP)
-1. Copy the `Library` folder to `C:\xampp\htdocs\`.
+1. Change the root folder name to 'Library'
+2. Copy the `Library` folder to `C:\xampp\htdocs\`.
 2. Start Apache and MySQL in XAMPP.
 3. Import `demo_data.txt` via phpMyAdmin (http://localhost/phpmyadmin).
 4. Open in browser: `http://localhost/Library/public/home.php`
