@@ -29,7 +29,7 @@ $user = $_SESSION['user'] ?? null;
             <?php if ($user && $user['role'] === 'admin'): ?>
             <th>ID</th>
             <?php endif; ?>
-            <th>Title</th><th>Author</th><th>Year</th><th>Pages</th><th>Price</th><th>Rate</th>
+            <th>Title</th><th>Author</th><th>Year</th><th>Pages</th><th>Price</th><th>Rate</th><th>Opis_68153</th>
             <?php if ($user && $user['role'] === 'admin'): ?>
             <th>Actions</th>
             <?php endif; ?>
@@ -49,6 +49,7 @@ $user = $_SESSION['user'] ?? null;
           <div class="col-md-2"><input id="b_pages" type="number" class="form-control" placeholder="Pages" required  min="1" max="10000"></div>
           <div class="col-md-2"><input id="b_price" type="number" min="0" step="0.01" class="form-control" placeholder="Price" required></div>
           <div class="col-md-1"><input id="b_rate" type="number" step="0.1" min="0" max="5" class="form-control" placeholder="Rate" required></div>
+          <div class="col-md-1"><input id="b_opis_68153"class="form-control" placeholder="Opis_68153" required></div>
           <div class="col-md-1"><button class="btn btn-primary w-100" type="submit">Add</button></div>
         </form>
       </div>

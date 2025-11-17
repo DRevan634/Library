@@ -32,6 +32,7 @@ if (!$user || $user['role'] !== 'admin') {
       <div class="mb-3"><input id="e_pages" type="number" class="form-control" placeholder="Pages" required min="1" max="10000"></div>
       <div class="mb-3"><input id="e_price" type="number" min="0" step="0.01" class="form-control" placeholder="Price" required></div>
       <div class="mb-3"><input id="e_rate" type="number" step="0.1" min="0" max="5" class="form-control" placeholder="Rate" required></div>
+      <div class="mb-3"><input id="e_opis_68153"class="form-control" placeholder="Opis_68153" required></div>
       <button class="btn btn-primary">Save</button>
       <a href="books.php" class="btn btn-secondary ms-2">Back</a>
     </form>

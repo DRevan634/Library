@@ -89,8 +89,8 @@ if ($method === 'POST') {
         echo json_encode(['errors' => $errors]);
         exit;
     }
-    $stmt = $pdo->prepare("INSERT INTO books (title, author, year, pages, price, rate) VALUES (?, ?, ?, ?, ?, ?)");
-    $stmt->execute([ $data['title'], $data['author'], (int)$data['year'], (int)$data['pages'], (float)$data['price'], (float)$data['rate'] ]);
+    $stmt = $pdo->prepare("INSERT INTO books (title, author, year, pages, price, rate, opis_68153) VALUES (?, ?, ?, ?, ?, ?, ?)");
+    $stmt->execute([ $data['title'], $data['author'], (int)$data['year'], (int)$data['pages'], (float)$data['price'], (float)$data['rate'], $data['opis_68153'] ]);
     echo json_encode(['success' => true, 'id' => $pdo->lastInsertId()]);
     exit;
 }
@@ -111,8 +111,8 @@ if ($method === 'PUT') {
         echo json_encode(['errors' => $errors]);
         exit;
     }
-    $stmt = $pdo->prepare("UPDATE books SET title=?, author=?, year=?, pages=?, price=?, rate=? WHERE id=?");
-    $stmt->execute([ $data['title'], $data['author'], (int)$data['year'], (int)$data['pages'], (float)$data['price'], (float)$data['rate'], $id ]);
+    $stmt = $pdo->prepare("UPDATE books SET title=?, author=?, year=?, pages=?, price=?, rate=?, opis_68153=? WHERE id=?");
+    $stmt->execute([ $data['title'], $data['author'], (int)$data['year'], (int)$data['pages'], (float)$data['price'], (float)$data['rate'], $data['opis_68153'], $id ]);
     echo json_encode(['success' => true]);
     exit;
 }

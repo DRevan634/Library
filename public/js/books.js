@@ -21,6 +21,7 @@ async function loadBooks() {
       <td>${b.pages}</td>
       <td>${parseFloat(b.price).toFixed(2)}</td>
       <td>${parseFloat(b.rate).toFixed(1)}</td>
+      <td>${escapeHtml(b.opis_68153)}</td>
     `;
         if (user && user.role == 'admin') {
             tr.innerHTML = `<td>${b.id}</td>` + tr.innerHTML
@@ -56,6 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 pages: Number(document.getElementById('b_pages').value),
                 price: Number(document.getElementById('b_price').value),
                 rate: Number(document.getElementById('b_rate').value),
+                opis_68153: document.getElementById('b_opis_68153').value.trim()
             };
             const res = await fetch('/Library/api/books.php', {
                 method: 'POST',
@@ -87,6 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('e_pages').value = b.pages;
             document.getElementById('e_price').value = parseFloat(b.price).toFixed(2);
             document.getElementById('e_rate').value = parseFloat(b.rate).toFixed(1);
+            document.getElementById('e_opis_68153').value = b.opis_68153;
         });
         editForm.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -97,6 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 pages: Number(document.getElementById('e_pages').value),
                 price: Number(document.getElementById('e_price').value),
                 rate: Number(document.getElementById('e_rate').value),
+                opis_68153: document.getElementById('e_opis_68153').value.trim(),
                 id: document.getElementById('e_id').value
             };
             const res = await fetch(`/Library/api/books.php?id=${payload.id}`, {

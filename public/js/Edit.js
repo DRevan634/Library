@@ -21,6 +21,7 @@ async function loadBook() {
     document.getElementById('author').value = book.author;
     document.getElementById('pages').value = book.pages;
     document.getElementById('date').value = book.published_date;
+    document.getElementById('opis_68153').value = book.opis_68153;
 }
 
 async function updateBook(e) {
@@ -33,7 +34,8 @@ async function updateBook(e) {
         pages: Number(document.getElementById('pages').value),
         published_date: document.getElementById('date').value,
         price: Number(document.getElementById('price').value),
-        rate: Number(document.getElementById('rate').value)
+        rate: Number(document.getElementById('rate').value),
+        opis_68153: document.getElementById('opis_68153').value
     };
 
     const res = await fetch(`${API}?id=${bookId}`, {
