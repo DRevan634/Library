@@ -11,6 +11,7 @@ $user = $_SESSION['user'] ?? null;
     <div class="collapse navbar-collapse" id="navMain">
       <ul class="navbar-nav ms-auto">
         <li class="nav-item"><a class="nav-link" href="books.php">Books</a></li>
+        <li class="nav-item"><a class="nav-link" href="weather.php">Weather</a></li>
         <?php if ($user): ?>
           <li class="nav-item"><a class="nav-link" href="../Library/api/auth.php?action=logout" onclick="event.preventDefault(); logout();">Logout</a></li>
         <?php else: ?>

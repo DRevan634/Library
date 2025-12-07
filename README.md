@@ -22,3 +22,4 @@
 - `POST /api/auth.php?action=logout` — logout
 
 ![preview](preview.png)
+![preview](weatherPreview.png)
