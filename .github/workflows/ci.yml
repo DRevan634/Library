@@ -14,6 +14,10 @@ jobs:
 
       - name: Start PHP server
         run: php -S localhost:8000 -t . > server.log 2>&1 &
+
+      - name: Show server log on failure
+        if: failure()
+        run: cat server.log || true
       
       - name: Wait for server
         run: |
