@@ -33,35 +33,63 @@ $user = $_SESSION['user'] ?? null;
 </main>
 
 <script>
-document.getElementById('weatherForm').addEventListener('submit', async (e)=>{
-    e.preventDefault();
-    
-    const city = document.getElementById('city').value.trim();
-    const loading = document.getElementById('loading');
-    const error   = document.getElementById('error');
-    const result  = document.getElementById('result');
+async function fetchWeatherByCity(city) {
+  const geoUrl = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1`;
+  const geoRes = await fetch(geoUrl);
+  if (!geoRes.ok) throw new Error("Geocoding request failed");
+  const geoData = await geoRes.json();
 
-    loading.classList.remove("d-none");
-    error.classList.add("d-none");
-    result.classList.add("d-none");
+  if (!geoData.results || !geoData.results.length) {
+    throw new Error("City not found");
+  }
 
-    const res = await fetch(`/Library/api/weather.php?city=${encodeURIComponent(city)}`);
+  const { latitude, longitude } = geoData.results[0];
 
-    const data = await res.json();
-    loading.classList.add("d-none");
+  const weatherUrl =
+    `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true`;
+  const weatherRes = await fetch(weatherUrl);
+  if (!weatherRes.ok) throw new Error("Weather request failed");
+  const weatherData = await weatherRes.json();
 
-    if (!res.ok || data.error) {
-        error.textContent = data.error || "Unknown error";
-        error.classList.remove("d-none");
-        return;
-    }
+  if (!weatherData.current_weather) {
+    throw new Error("No current weather data");
+  }
+
+  return {
+    temperature: weatherData.current_weather.temperature,
+    windspeed: weatherData.current_weather.windspeed,
+    time: weatherData.current_weather.time,
+  };
+}
+
+document.getElementById('weatherForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const city = document.getElementById('city').value.trim();
+  const loading = document.getElementById('loading');
+  const error = document.getElementById('error');
+  const result = document.getElementById('result');
+
+  loading.classList.remove('d-none');
+  error.classList.add('d-none');
+  result.classList.add('d-none');
+  error.textContent = '';
+
+  try {
+    const data = await fetchWeatherByCity(city);
 
     result.innerHTML = `
-        Temperature: <b>${data.temperature}°C</b><br>
-        Wind speed: <b>${data.windspeed} km/h</b><br>
-        Time: <b>${data.time}</b>
+      Temperature: <b>${data.temperature}Â°C</b><br>
+      Wind speed: <b>${data.windspeed}</b> km/h<br>
+      Time: <b>${data.time}</b>
     `;
-    result.classList.remove("d-none");
+    result.classList.remove('d-none');
+  } catch (err) {
+    error.textContent = err.message || 'Unknown error';
+    error.classList.remove('d-none');
+  } finally {
+    loading.classList.add('d-none');
+  }
 });
 </script>
 

@@ -4,6 +4,7 @@ require_once __DIR__ . '/../db.php';
 require_once __DIR__ . '/../middleware.php';
 
 $method = $_SERVER['REQUEST_METHOD'];
+$action = $_GET['action'] ?? ($_POST['action'] ?? null);
 
 function validateBookInput($data, $isUpdate = false) {
     $errors = [];
@@ -80,6 +81,54 @@ if ($method === 'GET') {
     exit;
 }
 
+if ($method === 'POST' && $action === 'update') {
+    requireAdmin();
+    $input = json_decode(file_get_contents("php://input"), true) ?? $_POST;
+    $errors = validateBookInput($input, true);
+    if ($errors) {
+        http_response_code(400);
+        echo json_encode(['errors'=>$errors]);
+        exit;
+    }
+
+    $stmt = $pdo->prepare("
+        UPDATE books 
+        SET title=?, author=?, year=?, price=?, rate=?, pages=?, opis_68153=?
+        WHERE id=?
+    ");
+
+    $stmt->execute([
+        $input['title'],
+        $input['author'],
+        $input['year'],
+        $input['price'],
+        $input['rate'],
+        $input['pages'],
+        $input['opis_68153'],
+        $input['id']
+    ]);
+
+    echo json_encode(['success'=>true]);
+    exit;
+}
+
+if ($method === 'POST' && $action === 'delete') {
+    requireAdmin();
+    $input = json_decode(file_get_contents("php://input"), true) ?? $_POST;
+    $id = $input['id'] ?? 0;
+    if (!$id) {
+        http_response_code(400);
+        echo json_encode(['error' => 'ID missing']);
+        exit;
+    }
+
+    $stmt = $pdo->prepare("DELETE FROM books WHERE id = ?");
+    $stmt->execute([$id]);
+
+    echo json_encode(['success'=>true]);
+    exit;
+}
+
 if ($method === 'POST') {
     requireAdmin();
     $data = json_decode(file_get_contents('php://input'), true) ?? [];
@@ -92,42 +141,6 @@ if ($method === 'POST') {
     $stmt = $pdo->prepare("INSERT INTO books (title, author, year, pages, price, rate, opis_68153) VALUES (?, ?, ?, ?, ?, ?, ?)");
     $stmt->execute([ $data['title'], $data['author'], (int)$data['year'], (int)$data['pages'], (float)$data['price'], (float)$data['rate'], $data['opis_68153'] ]);
     echo json_encode(['success' => true, 'id' => $pdo->lastInsertId()]);
-    exit;
-}
-
-if ($method === 'PUT') {
-    requireAdmin();
-    $id = $_GET['id'] ?? null;
-    $data = json_decode(file_get_contents('php://input'), true) ?? [];
-    if (!$id && isset($data['id'])) $id = $data['id'];
-    if (!$id) {
-        http_response_code(400);
-        echo json_encode(['error' => 'ID is required']);
-        exit;
-    }
-    $errors = validateBookInput($data, true);
-    if ($errors) {
-        http_response_code(400);
-        echo json_encode(['errors' => $errors]);
-        exit;
-    }
-    $stmt = $pdo->prepare("UPDATE books SET title=?, author=?, year=?, pages=?, price=?, rate=?, opis_68153=? WHERE id=?");
-    $stmt->execute([ $data['title'], $data['author'], (int)$data['year'], (int)$data['pages'], (float)$data['price'], (float)$data['rate'], $data['opis_68153'], $id ]);
-    echo json_encode(['success' => true]);
-    exit;
-}
-
-if ($method === 'DELETE') {
-    requireAdmin();
-    $id = $_GET['id'] ?? null;
-    if (!$id) {
-        http_response_code(400);
-        echo json_encode(['error' => 'ID is required']);
-        exit;
-    }
-    $stmt = $pdo->prepare("DELETE FROM books WHERE id = ?");
-    $stmt->execute([$id]);
-    echo json_encode(['success' => true]);
     exit;
 }
 

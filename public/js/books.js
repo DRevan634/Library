@@ -101,11 +101,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 price: Number(document.getElementById('e_price').value),
                 rate: Number(document.getElementById('e_rate').value),
                 opis_68153: document.getElementById('e_opis_68153').value.trim(),
-                id: document.getElementById('e_id').value
+                id: Number(document.getElementById('e_id').value)
             };
-            const res = await fetch(`/Library/api/books.php?id=${payload.id}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
+            const res = await fetch('/Library/api/books.php?action=update', {
+                method: 'POST',
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload)
             });
             if (res.ok) {
@@ -125,7 +125,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function deleteBook(id) {
     if (!confirm('Delete book?')) return;
-    const res = await fetch(`/Library/api/books.php?id=${id}`, { method: 'DELETE' });
+    const res = await fetch('/Library/api/books.php?action=delete', {
+    method: 'POST',
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ id })
+    });
     if (res.ok) {
         location.reload();
     } else {
