@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build_and_test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Start PHP server
+        run: php -S localhost:8000 -t . > server.log 2>&1 &
+      
+      - name: Wait for server
+        run: |
+          for i in {1..10}; do
+            curl -fsS http://localhost:8000/health.php && exit 0 || sleep 2
+          done
+          exit 1
+
+      - name: Integration tests
+        run: |
+          # 1) POST с плохим payload -> 400
+          curl -s -o /dev/null -w "%{http_code}" \
+            -X POST http://localhost:8000/api/books.php \
+            -H "Content-Type: application/json" \
+            -d '{}' | grep 400
+
+          # 2) GET несуществующей книги -> 404
+          curl -s -o /dev/null -w "%{http_code}" \
+            http://localhost:8000/api/books.php?id=999999 | grep 404
+
+          # 3) DELETE несуществующей книги -> 404
+          curl -s -o /dev/null -w "%{http_code}" \
+            -X POST "http://localhost:8000/api/books.php?action=delete" \
+            -H "Content-Type: application/json" \
+            -d '{"id":999999}' | grep 404
