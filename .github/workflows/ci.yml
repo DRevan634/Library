@@ -25,23 +25,21 @@ jobs:
           exit 1
 
       - name: Integration tests
-        env:
-          CI: 'true'
-          CI_TOKEN: supersecret
         run: |
-          echo "=== Test 1: bad POST ==="
-          curl -i \
+          # 1) POST с плохим payload -> 400
+          curl -s -o /dev/null -w "%{http_code}" \
             -X POST http://localhost:8000/api/books.php \
             -H "Content-Type: application/json" \
-            -d '{}' || true
-      
-          echo "=== Test 2: GET 999999 ==="
-          curl -i "http://localhost:8000/api/books1.php?id=999999" || true
-      
-          echo "=== Test 3: DELETE 999999 ==="
-          curl -i \
-            -X POST "http://localhost:8000/api/books.php?action=delete" \
+            -d '{}' | grep 400
+
+          # 2) GET несуществующей книги -> 404
+          curl -s -o /dev/null -w "%{http_code}" \
+            "http://localhost:8000/api/books.php?id=999999" | grep 404
+
+          # 3) DELETE несуществующей книги -> 404
+          curl -s -o /dev/null -w "%{http_code}" \
+            -X POST "http://localhost:8000/api//books.php?action=delete" \
             -H "Content-Type: application/json" \
-            -d '{"id":999999}' || true
+            -d '{"id":999999}' | grep 404
 
 
