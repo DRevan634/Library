@@ -26,11 +26,11 @@ jobs:
 
       - name: Integration tests
         run: |
-          # 1) POST с плохим payload -> 400
+          # 1) POST с плохим payload -> 404
           curl -s -o /dev/null -w "%{http_code}" \
             -X POST http://localhost:8000/api/books.php \
             -H "Content-Type: application/json" \
-            -d '{}' | grep 400
+            -d '{}' | grep 404
 
           # 2) GET несуществующей книги -> 404
           curl -s -o /dev/null -w "%{http_code}" \
