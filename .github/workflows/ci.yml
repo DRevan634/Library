@@ -28,16 +28,16 @@ jobs:
         run: |
           echo "=== Test 1: bad POST ==="
           curl -i \
-            -X POST http://localhost:8000/api/books.php \
+            -X POST http://localhost:8000/../api/books.php \
             -H "Content-Type: application/json" \
             -d '{}' || true
       
           echo "=== Test 2: GET 999999 ==="
-          curl -i "http://localhost:8000/api/books1.php?id=999999" || true
+          curl -i "http://localhost:8000/../api/books1.php?id=999999" || true
       
           echo "=== Test 3: DELETE 999999 ==="
           curl -i \
-            -X POST "http://localhost:8000/api/books.php?action=delete" \
+            -X POST "http://localhost:8000/../api/books.php?action=delete" \
             -H "Content-Type: application/json" \
             -d '{"id":999999}' || true
 
