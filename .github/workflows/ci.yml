@@ -30,7 +30,7 @@ jobs:
           curl -i \
             -X POST http://localhost:8000/api/books.php \
             -H "Content-Type: application/json" \
-            -d '{}' || grep 404
+            -d '{}' || grep 400
       
           echo "=== Test 2: GET 999999 ==="
           curl -i "http://localhost:8000/api/bookss.php?id=999999" || grep 404
