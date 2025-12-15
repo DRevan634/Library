@@ -1,5 +1,7 @@
 ﻿# Library — PHP + REST API + Bootstrap
 
+https://libraryandweather.infinityfree.me/Library/public/home.php
+
 ## Quick start (XAMPP)
 1. Change the root folder name to 'Library'
 2. Copy the `Library` folder to `C:\xampp\htdocs\`.
@@ -22,4 +24,5 @@
 - `POST /api/auth.php?action=logout` — logout
 
 ![preview](preview.png)
+
 ![preview](weatherPreview.png)
