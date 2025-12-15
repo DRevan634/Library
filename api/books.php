@@ -84,6 +84,13 @@ if ($method === 'GET') {
 if ($method === 'POST' && $action === 'update') {
     requireAdmin();
     $input = json_decode(file_get_contents("php://input"), true) ?? $_POST;
+    if (!is_array($input)) {
+        http_response_code(400);
+        echo json_encode(['errors' => ['Invalid JSON']]);
+        exit;
+    }
+
+    
     $errors = validateBookInput($input, true);
     if ($errors) {
         http_response_code(400);
@@ -131,7 +138,13 @@ if ($method === 'POST' && $action === 'delete') {
 
 if ($method === 'POST') {
     requireAdmin();
-    $data = json_decode(file_get_contents('php://input'), true) ?? [];
+    $data = json_decode(file_get_contents('php://input'), true);
+    if (!is_array($data)) {
+        http_response_code(400);
+        echo json_encode(['errors' => ['Invalid JSON']]);
+        exit;
+    }
+    
     $errors = validateBookInput($data);
     if ($errors) {
         http_response_code(400);
@@ -146,6 +159,7 @@ if ($method === 'POST') {
 
 http_response_code(405);
 echo json_encode(['error' => 'Method not allowed']);
+
 
 
 
