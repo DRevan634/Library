@@ -25,6 +25,9 @@ jobs:
           exit 1
 
       - name: Integration tests
+        env:
+          CI: 'true'
+          CI_TOKEN: supersecret
         run: |
           echo "=== Test 1: bad POST ==="
           curl -i \
