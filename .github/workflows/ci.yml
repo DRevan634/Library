@@ -13,12 +13,12 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Start PHP server
-        run: php -S localhost:8000 -t public > server.log 2>&1 &
+        run: php -S localhost:8000 -t . > server.log 2>&1 &
 
       - name: Wait for server
         run: |
           for i in {1..10}; do
-            curl -fsS http://localhost:8000/health.php && exit 0 || sleep 2
+            curl -fsS http://localhost:8000/public/health.php && exit 0 || sleep 2
           done
           echo "Server did not start"
           cat server.log || true
@@ -28,16 +28,16 @@ jobs:
         run: |
           echo "=== Test 1: bad POST ==="
           curl -i \
-            -X POST http://localhost:8000/../api/books.php \
+            -X POST http://localhost:8000/api/books.php \
             -H "Content-Type: application/json" \
             -d '{}' || true
       
           echo "=== Test 2: GET 999999 ==="
-          curl -i "http://localhost:8000/../api/books1.php?id=999999" || true
+          curl -i "http://localhost:8000/api/books1.php?id=999999" || true
       
           echo "=== Test 3: DELETE 999999 ==="
           curl -i \
-            -X POST "http://localhost:8000/../api/books.php?action=delete" \
+            -X POST "http://localhost:8000/api/books.php?action=delete" \
             -H "Content-Type: application/json" \
             -d '{"id":999999}' || true
 
