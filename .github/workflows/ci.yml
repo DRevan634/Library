@@ -34,11 +34,11 @@ jobs:
 
           # 2) GET несуществующей книги -> 404
           curl -s -o /dev/null -w "%{http_code}" \
-            "http://localhost:8000/api//books.php?id=999999" | grep 404
+            "http://localhost:8000/api/bookss.php?id=999999" | grep 404
 
           # 3) DELETE несуществующей книги -> 404
           curl -s -o /dev/null -w "%{http_code}" \
-            -X POST "http://localhost:8000/api//books.php?action=delete" \
+            -X POST "http://localhost:8000/api/bookss.php?action=delete" \
             -H "Content-Type: application/json" \
             -d '{"id":999999}' | grep 404
 
