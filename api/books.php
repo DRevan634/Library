@@ -117,7 +117,7 @@ if ($method === 'POST' && $action === 'delete') {
     $input = json_decode(file_get_contents("php://input"), true) ?? $_POST;
     $id = $input['id'] ?? 0;
     if (!$id) {
-        http_response_code(400);
+        http_response_code(404);
         echo json_encode(['error' => 'ID missing']);
         exit;
     }
@@ -146,5 +146,6 @@ if ($method === 'POST') {
 
 http_response_code(405);
 echo json_encode(['error' => 'Method not allowed']);
+
 
 
