@@ -33,7 +33,7 @@ jobs:
             -d '{}' || true
       
           echo "=== Test 2: GET 999999 ==="
-          curl -i "http://localhost:8000/api/books.php?id=999999" || true
+          curl -i "http://localhost:8000/api/books1.php?id=999999" || true
       
           echo "=== Test 3: DELETE 999999 ==="
           curl -i \
